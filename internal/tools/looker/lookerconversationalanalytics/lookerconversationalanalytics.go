@@ -249,7 +249,7 @@ func (t Tool) Invoke(ctx context.Context, resourceMgr tools.SourceProvider, para
 	}
 	oauth_creds := OAuthCredentials{}
 	if source.UseClientAuthorization() {
-rawToken, err := accessToken.ParseBearerToken()
+		rawToken, err := accessToken.ParseBearerToken()
 		if err != nil {
 			return nil, err.(util.ToolboxError)
 		}
