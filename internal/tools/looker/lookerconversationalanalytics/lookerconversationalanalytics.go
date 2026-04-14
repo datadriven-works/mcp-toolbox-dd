@@ -249,7 +249,11 @@ func (t Tool) Invoke(ctx context.Context, resourceMgr tools.SourceProvider, para
 	}
 	oauth_creds := OAuthCredentials{}
 	if source.UseClientAuthorization() {
-		oauth_creds.Token = TokenBased{AccessToken: string(accessToken)}
+		rawToken, err := accessToken.ParseBearerToken()
+		if err != nil {
+			return nil, util.NewClientServerError("invalid access token format: expected 'Bearer <token>'", http.StatusUnauthorized, err)
+		}
+		oauth_creds.Token = TokenBased{AccessToken: rawToken}
 	} else {
 		oauth_creds.Secret = SecretBased{ClientId: source.LookerApiSettings().ClientId, ClientSecret: source.LookerApiSettings().ClientSecret}
 	}
