@@ -249,9 +249,9 @@ func (t Tool) Invoke(ctx context.Context, resourceMgr tools.SourceProvider, para
 	}
 	oauth_creds := OAuthCredentials{}
 	if source.UseClientAuthorization() {
-		rawToken, err := accessToken.ParseBearerToken()
+rawToken, err := accessToken.ParseBearerToken()
 		if err != nil {
-			return nil, util.NewClientServerError("invalid access token format: expected 'Bearer <token>'", http.StatusUnauthorized, err)
+			return nil, err.(util.ToolboxError)
 		}
 		oauth_creds.Token = TokenBased{AccessToken: rawToken}
 	} else {
